@@ -1,0 +1,39 @@
+.linea{
+        margin-bottom: 2px;
+        margin-top: 2px;
+}
+.cuerpo{
+        padding-left: 10%;
+        padding-right: 10%;
+        align-self: center;
+}
+.titulo{
+        padding-top: 10px;
+        padding-bottom: 0px;
+        padding-left: 30px;
+        text-emphasis: #9C1A1C;
+        text-shadow: #002352;
+}
+.pdf-view{
+        padding-top: 10px;
+        padding-left: 100px;
+}
+.linkes{
+        font-size: 12px;
+        padding-left:60px;
+        margin-bottom:5px;
+}
+.linkes:link{
+        color:#5c9df2;
+}
+.linkes:hover{
+        color:#002352;
+}
+
+.ul {
+  list-style: none; /* Remove default bullets */
+}
+
+.ul li::before {
+  display: inline-block; /* Needed to add space between the bullet and the text */
+}
