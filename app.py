@@ -9,7 +9,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'UNTREF - Normativas'
 server = app.server # the Flask app
 
-df = pd.read_csv('db_files.csv', sep='|')
+df = pd.read_csv('assets/db_files.csv', sep='|')
 
 propuestas_lst = list(df.carpeta.unique())
 filtradas = list(df.carpeta.unique())
