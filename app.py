@@ -2,16 +2,18 @@ import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import os
+import os ; import pandas as pd
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'UNTREF - Normativas'
 server = app.server # the Flask app
 
+df = pd.read_csv('db_files.csv', sep='|')
 
-propuestas_lst = os.listdir('assets/normativas')
-filtradas = os.listdir('assets/normativas')
+propuestas_lst = list(df.carpeta.unique())
+filtradas = list(df.carpeta.unique())
+
 
 niveles = ['Doctorado','Maestría','Especializacion','Diplomatura','Curso']
 niveles_dic = {niveles[i] : niveles[i][:3].upper() for i in range(len(niveles))}
@@ -56,7 +58,6 @@ app.layout = html.Div([
             id='norma_elegida',
             clearable=False,
             className='titulo',
-
         ),
     ], className='row'),
 
@@ -89,10 +90,8 @@ def set_folder(available_options,carrera):
     Output('norma_elegida', 'options'),
     [Input('link_title', 'children')])
 def set_archivos(norma):
-
-    path = 'assets/normativas/'+norma
-    cantidad = len(os.listdir(path))-1
-    names = os.listdir(path)
+    cantidad = len(df.loc[df.carpeta == norma])
+    names = list(df.loc[df.carpeta == norma].archivos)
     names.sort()
     if norma == '':
         return [{'label': 'Seleccione una propuesta', 'value': ''}]
@@ -101,22 +100,18 @@ def set_archivos(norma):
 
 @app.callback(
     Output('tester_div', 'children'),
-    [Input('link_title', 'children'),
-     Input('norma_elegida', 'value')])
-
-def show_file(folder,file):
+    [Input('norma_elegida', 'value')]
+)
+def show_file(file):
     result = []
     try:
-        path = 'assets/normativas/' + folder
+        path = 'assets/normativas/'
         result.append(html.A(className='linkes', children='descargar PDF',
                              href=path + '/' + file,
-                             download=''.join(folder.replace('-', '').split(' ')[:3]) + ' --- ' + file),
-                      )
-        result.append(html.P(file, className='eight columns'),
-                      )
-        result.append(html.Iframe(src=path + '/' + file, height=600, width=800)
-#        result.append(html.Div(html.Iframe(src=path + '/' + file, height=600, width=800),className='titulo')
-                      )
+                             download = file,
+                             ))
+        result.append(html.P(file, className='eight columns'))
+        result.append(html.Iframe(src=path + '/' + file, height=600, width=800))
     except:
         pass
     if file == '':
