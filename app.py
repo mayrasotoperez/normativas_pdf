@@ -11,6 +11,8 @@ server = app.server # the Flask app
 
 df = pd.read_csv('assets/db_files.csv', sep='|')
 
+
+
 propuestas_lst = list(df.carpeta.unique())
 filtradas = list(df.carpeta.unique())
 
@@ -73,6 +75,10 @@ def set_nivel(available_options):
     filtradas = []
     for i in propuestas_lst:
         if i.find(available_options) > 0: filtradas.append(i)
+
+    filtradas = [i.split('- ')[1] for i in filtradas]
+    filtradas.sort()
+
     return [dict({'label': filtradas[i], 'value': i}) for i in range(len(filtradas))]
 
 @app.callback(
@@ -96,7 +102,7 @@ def set_archivos(norma):
     if norma == '':
         return [{'label': 'Seleccione una propuesta', 'value': ''}]
     else:
-        return [dict({'label': names[i], 'value': names[i]}) for i in range(len(names)-1)]
+        return [dict({'label': names[i], 'value': names[i]}) for i in range(len(names))]
 
 @app.callback(
     Output('tester_div', 'children'),
