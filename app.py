@@ -89,6 +89,12 @@ def set_folder(available_options,carrera):
     filtradas = []
     for i in propuestas_lst:
         if i.find(available_options) > 0: filtradas.append(i)
+
+    filt = {i.split('- ')[1] : i for i in filtradas}
+    filtradas = [i.split('- ')[1] for i in filtradas]
+    filtradas.sort()
+    filtradas = [filt[filtradas[i]] for i in range(len(filtradas))]
+
     try: return filtradas[carrera]
     except: return ''
 
